@@ -1,17 +1,15 @@
 version: '3.8'
 
 services:
-  master-worker:
+  master:
     build:
-      context: ./master-worker
-      dockerfile: Dockerfile
+      context: ./master
     networks:
       - worker-network
 
-  slave-worker:
+  slave:
     build:
-      context: ./slave-worker
-      dockerfile: Dockerfile
+      context: ./slave
     networks:
       - worker-network
 
