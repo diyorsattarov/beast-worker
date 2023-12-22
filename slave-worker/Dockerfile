@@ -13,6 +13,6 @@ RUN cmake . && make
 
 FROM ubuntu:18.04
 
-COPY --from=build /app/worker /app/worker
+COPY --from=build /app/slave-worker /app/slave-worker
 
-CMD ["/app/worker"]
+CMD ["/app/slave-worker"]
