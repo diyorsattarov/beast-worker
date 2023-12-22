@@ -32,23 +32,34 @@ public:
         // Perform task...
         sendResponse("Task completed."); // Send response back to the master
     }
-    
+    void sendResponse(const std::string& message) {
+        ws_.write(net::buffer(message));
+    }
 private:
     std::string masterHost_;
     unsigned short port_;
     net::io_context ioc_;
     tcp::resolver resolver_;
     websocket::stream<tcp::socket> ws_;
-
-    void sendResponse(const std::string& message) {
-        ws_.write(net::buffer(message));
-    }
 };
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <masterHost> <port>\n";
+        return 1;
+    }
+    std::string masterHost = argv[1];
+    unsigned short port = std::stoi(argv[2]);
+
     try {
-        Slave slave("master", 8080);
+        Slave slave(masterHost, port);
         slave.connectToMaster();
+
+        // Heartbeat loop
+        while (true) {
+            std::this_thread::sleep_for(std::chrono::seconds(10)); // Send heartbeat every 10 seconds
+            slave.sendResponse("Heartbeat");
+        }
     } catch (std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;

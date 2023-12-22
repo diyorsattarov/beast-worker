@@ -13,5 +13,14 @@ services:
     networks:
       - worker-network
 
+  test:
+    build:
+      context: ./tests
+    depends_on:
+      - master
+      - slave
+    networks:
+      - worker-network
+
 networks:
   worker-network:

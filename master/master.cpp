@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
-
+#include <cstdlib>
 namespace beast = boost::beast;
 namespace http = beast::http;
 namespace websocket = beast::websocket;
@@ -12,8 +12,7 @@ using tcp = boost::asio::ip::tcp;
 
 class Master {
 public:
-    Master(unsigned short port, const std::string& taskMessage)
-        : acceptor_(ioc_, {tcp::v4(), port}), taskMessage_(taskMessage) {}
+    Master(unsigned short port, const std::string& taskMessage) : acceptor_(ioc_, {tcp::v4(), port}), taskMessage_(taskMessage) {}
 
     void startServer() {
         waitForConnection();
@@ -36,8 +35,7 @@ private:
 
     class Session : public std::enable_shared_from_this<Session> {
     public:
-        Session(tcp::socket socket, const std::string& taskMessage)
-            : ws_(std::move(socket)), taskMessage_(taskMessage) {}
+        Session(tcp::socket socket, const std::string& taskMessage) : ws_(std::move(socket)), taskMessage_(taskMessage) {}
 
         void start() {
             ws_.async_accept([self = shared_from_this()](beast::error_code ec) {
@@ -82,8 +80,26 @@ private:
     };
 };
 
-int main() {
-    Master master(8080, "Task for slave worker2\n");
+int main(int argc, char* argv[]) {
+    // Check if the correct number of arguments are passed
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <port> <task_message>\n";
+        return EXIT_FAILURE;
+    }
+
+    // Parse the port number
+    unsigned short port = static_cast<unsigned short>(std::atoi(argv[1]));
+    if (port == 0) {
+        std::cerr << "Invalid port number.\n";
+        return EXIT_FAILURE;
+    }
+
+    // Get the task message
+    std::string taskMessage(argv[2]);
+
+    // Start the server
+    Master master(port, taskMessage);
     master.startServer();
+
     return 0;
 }
