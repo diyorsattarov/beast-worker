@@ -6,3 +6,16 @@ services:
     build:
       context: ./worker
       dockerfile: Dockerfile
+    volumes:
+      - shared_data:/shared
+
+  worker-2:
+    container_name: worker-2
+    build:
+      context: ./worker-2
+      dockerfile: Dockerfile
+    volumes:
+      - shared_data:/shared
+
+volumes:
+  shared_data:
