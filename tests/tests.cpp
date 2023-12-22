@@ -17,7 +17,7 @@ int main() {
     // Create and run slave threads
     for (int i = 0; i < numberOfSlaves; ++i) {
         slaveThreads.emplace_back([&, i]() {
-            Slave slave("localhost", port); // Create a new slave instance
+            Slave slave("localhost", port, std::to_string(i)); // Create a new slave instance
             slave.connectToMaster();       // Connect each slave to the master
         });
     }
