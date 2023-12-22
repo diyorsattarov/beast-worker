@@ -1,9 +1,8 @@
 #include <csignal>
 #include <thread>
 #include <chrono>
-#include "master.cpp"
-#include "slave.cpp"
-
+#include "include/master.h"
+#include "include/slave.h"
 std::atomic<bool> interrupted(false);
 
 void signalHandler(int signum) {
