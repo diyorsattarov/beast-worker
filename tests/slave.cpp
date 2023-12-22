@@ -2,6 +2,7 @@
 #include <boost/beast.hpp>
 #include <iostream>
 #include <string>
+#include <chrono>
 
 namespace beast = boost::beast;
 namespace websocket = beast::websocket;
@@ -19,7 +20,7 @@ public:
         ws_.handshake(masterHost_, "/");
 
         sendIdentification();
-        receiveTask();
+        startPingPong();
     }
 
     void sendIdentification() {
@@ -27,20 +28,24 @@ public:
         ws_.write(net::buffer(identificationMessage));
     }
 
-    void receiveTask() {
-        beast::flat_buffer buffer;
-        ws_.read(buffer);
-
-        std::string task = beast::buffers_to_string(buffer.data());
-        std::cout << "[" << slaveId_ << "] Task received: " << task << std::endl;
-
-        // Perform task...
-        sendResponse("Task completed."); // Send response back to the master
+    void startPingPong() {
+        while (true) {
+            sendPing();
+            receivePong();
+            std::this_thread::sleep_for(std::chrono::seconds(1)); // Adjust the interval as needed
+        }
     }
 
-    void sendResponse(const std::string& message) {
-        std::string responseMessage = "[" + slaveId_ + "] " + message;
-        ws_.write(net::buffer(responseMessage));
+    void sendPing() {
+        std::string pingMessage = "[" + slaveId_ + "] Ping";
+        ws_.write(net::buffer(pingMessage));
+    }
+
+    void receivePong() {
+        beast::flat_buffer buffer;
+        ws_.read(buffer);
+        std::string pongMessage = beast::buffers_to_string(buffer.data());
+        std::cout << "[" << slaveId_ << "] Received: " << pongMessage << std::endl;
     }
 
 private:

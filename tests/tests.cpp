@@ -1,38 +1,44 @@
+#include <csignal>
 #include <thread>
 #include <chrono>
 #include "master.cpp"
 #include "slave.cpp"
 
+std::atomic<bool> interrupted(false);
+
+void signalHandler(int signum) {
+    interrupted.store(true);
+}
+
 int main() {
+    signal(SIGINT, signalHandler);
     int port = 8080;
     std::string taskMessage = "task for Slave";
-    // Initialize the master
+
     Master master(port, taskMessage);
     std::thread masterThread([&master]() { master.startServer(); });
 
-    // Vector to hold slave threads
-    std::vector<std::thread> slaveThreads;
-    const int numberOfSlaves = 5; // Adjust the number of slaves as needed
+    Slave slave("localhost", port, "1");
+    std::thread slaveThread([&slave]() { slave.connectToMaster(); });
 
-    // Create and run slave threads
-    for (int i = 0; i < numberOfSlaves; ++i) {
-        slaveThreads.emplace_back([&, i]() {
-            Slave slave("localhost", port, std::to_string(i)); // Create a new slave instance
-            slave.connectToMaster();       // Connect each slave to the master
-        });
+    // Wait for signal interruption (Ctrl+C)
+    while (!interrupted.load()) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    // Join all slave threads
-    for (auto& thread : slaveThreads) {
-        if (thread.joinable()) {
-            thread.join();
-        }
-    }
+    // After interruption, gracefully stop the master and slave
+    // master.stopServer();  // You need to implement this method in the Master class
+    // For the slave, you might need to implement a similar stop mechanism
+    // or close the websocket connection to stop its operations
 
-    // Join the master thread
+    // Join the threads
+    if (slaveThread.joinable()) {
+        slaveThread.join();
+    }
     if (masterThread.joinable()) {
         masterThread.join();
     }
 
+    std::cout << "Shutting down..." << std::endl;
     return 0;
 }
