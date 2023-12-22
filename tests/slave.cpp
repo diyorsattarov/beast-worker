@@ -43,20 +43,20 @@ private:
     websocket::stream<tcp::socket> ws_;
 };
 
-int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <masterHost> <port>\n";
-        return 1;
-    }
-    std::string masterHost = argv[1];
-    unsigned short port = std::stoi(argv[2]);
+// int main(int argc, char* argv[]) {
+//     if (argc != 3) {
+//         std::cerr << "Usage: " << argv[0] << " <masterHost> <port>\n";
+//         return 1;
+//     }
+//     std::string masterHost = argv[1];
+//     unsigned short port = std::stoi(argv[2]);
 
-    try {
-        Slave slave(masterHost, port);
-        slave.connectToMaster();
-    } catch (std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-    return 0;
-}
+//     try {
+//         Slave slave(masterHost, port);
+//         slave.connectToMaster();
+//     } catch (std::exception& e) {
+//         std::cerr << "Error: " << e.what() << std::endl;
+//         return EXIT_FAILURE;
+//     }
+//     return 0;
+// }

@@ -29,4 +29,4 @@ FROM ubuntu:18.04
 # Copy the binaries from the build stage
 COPY --from=build /app/master /app/master
 
-CMD ["/app/master"]
+CMD ["/app/master" "8080" "Slave instruction 1.\n"]

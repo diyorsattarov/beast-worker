@@ -4,23 +4,33 @@ services:
   master:
     build:
       context: ./master
+    command: ["/app/master", "8080", "Task for slave"]
     networks:
       - worker-network
+    # Comment out or remove the following line to prevent the master service from automatically starting
+    deploy:
+      replicas: 0
 
   slave:
     build:
       context: ./slave
+    command: ["/app/slave", "master", "8080"]
     networks:
       - worker-network
+    # Comment out or remove the following line to prevent the slave service from automatically starting
+    deploy:
+      replicas: 0
 
   test:
     build:
       context: ./tests
+    # Optionally, specify the command to run the tests, if different from the CMD in the Dockerfile
+    command: ["/app/tests"]
+    networks:
+      - worker-network
     depends_on:
       - master
       - slave
-    networks:
-      - worker-network
 
 networks:
   worker-network:

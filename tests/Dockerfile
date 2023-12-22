@@ -7,6 +7,13 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     wget \
     && rm -rf /var/lib/apt/lists/*
+    
+# Download and install Boost
+RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.72.0/source/boost_1_72_0.tar.gz \
+    && tar -xf boost_1_72_0.tar.gz \
+    && cd boost_1_72_0 \
+    && ./bootstrap.sh \
+    && ./b2 install
 
 
 WORKDIR /app

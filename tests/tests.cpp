@@ -1,19 +1,32 @@
-#include <cstdlib>
-#include <iostream>
 #include <thread>
+#include <chrono>
+#include "master.cpp" // Assumes Master class is defined in this file
+#include "slave.cpp"  // Assumes Slave class is defined in this file
 
-void run_command(const std::string &cmd) {
-    std::system(cmd.c_str());
-}
+// Assuming the Master and Slave classes have appropriate constructors and methods
 
 int main() {
-    // Start master and slave in separate threads
-    std::thread master_thread(run_command, "/master 8080 'Task for slave worker2'");
-    std::thread slave_thread(run_command, "/slave master 8080");
+    // Initialize master and slave with appropriate parameters
+    unsigned short port = 8080;
+    std::string taskMessage = "Task for slave";
+    Master master(port, taskMessage);
+    Slave slave("localhost", port); // Assuming the Slave connects to localhost
+
+    // Create and start the master and slave in separate threads
+    std::thread masterThread([&master](){
+        master.startServer();
+    });
+
+    // Give the master server some time to start up
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    std::thread slaveThread([&slave](){
+        slave.connectToMaster(); // Assuming this method initiates the slave's operations
+    });
 
     // Join threads to wait for their completion
-    master_thread.join();
-    slave_thread.join();
+    masterThread.join();
+    slaveThread.join();
 
     return 0;
 }
