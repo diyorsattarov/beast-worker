@@ -1,21 +1,19 @@
 version: '3.8'
 
 services:
-  slave-worker:
-    container_name: slave-worker
-    build:
-      context: ./slave-worker
-      dockerfile: Dockerfile
-    volumes:
-      - shared_data:/shared
-
   master-worker:
-    container_name: master-worker
     build:
       context: ./master-worker
       dockerfile: Dockerfile
-    volumes:
-      - shared_data:/shared
+    networks:
+      - worker-network
 
-volumes:
-  shared_data:
+  slave-worker:
+    build:
+      context: ./slave-worker
+      dockerfile: Dockerfile
+    networks:
+      - worker-network
+
+networks:
+  worker-network:
