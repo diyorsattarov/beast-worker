@@ -1,9 +1,7 @@
 #include <thread>
 #include <chrono>
-#include "master.cpp" // Assumes Master class is defined in this file
-#include "slave.cpp"  // Assumes Slave class is defined in this file
-
-// Assuming the Master and Slave classes have appropriate constructors and methods
+#include "master.cpp"
+#include "slave.cpp"
 
 int main() {
     // Initialize master and slave with appropriate parameters
