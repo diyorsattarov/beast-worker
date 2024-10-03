@@ -1,26 +1,23 @@
-# concurrency
+              GLWTS(Good Luck With That Shit) Общественная Лицензия
+                      Copyright (c) Все блять, кроме Автора
 
-```
- ✔ Container beast-worker-test-1  Recreated                                                                            0.2s 
-Attaching to test-1
-test-1  | [3] Task received: task for Slave
-test-1  | [4] Task received: task for Slave
-test-1  | [0] Task received: task for Slave
-test-1  | Task message sent (14 bytes).
-test-1  | [2] Task received: task for Slave
-test-1  | Task message sent (14 bytes).
-test-1  | Task message sent (14 bytes).
-test-1  | Task message sent (14 bytes).
-test-1  | Response received: Slave ID: 3
-test-1  | Response received: Slave ID: 4
-test-1  | Response received: Slave ID: 0
-test-1  | Response received: Slave ID: 2
-test-1  | Task message sent (14 bytes).
-test-1  | Response received: Slave ID: 1
-test-1  | [1] Task received: task for Slave
-^CGracefully stopping... (press Ctrl+C again to force)
-[+] Stopping 1/1
- ✔ Container beast-worker-test-1  Stopped                                                                             10.4s 
-test-1 exited with code 0
-canceled
-```
+Всем разрешается копировать, распространять, изменять, совмещать, продавать,
+публиковать, сублицензировать или творить любую другую хуйню с этим кодом
+на СВОЙ СТРАХ и РИСК.
+
+Автор абсолютно нихуя не понимает в предназначении данного кода.
+Он может сработать, а может и нет - автору не ебет.
+
+
+                    "УДАЧИ С ЭТОМ ДЕРЬМОМ" ОБЩЕСТВЕННАЯ ЛИЦЕНЗИЯ
+          УСЛОВИЯ И ПОЛОЖЕНИЯ ДЛЯ КОПИРОВАНИЯ, РАСПРОСТРАНЕНИЯ И ИЗМЕНЕНИЯ
+
+  0. Делайте ЛЮБУЮ ХУЙНЮ, ВЗБРЕДУЩУЮ ВАМ В ГОЛОВУ до тех пор, пока ВЫ НЕ ОСТАВЛЯЕТЕ
+УЛИК ДЛЯ НАХОЖДЕНИЯ АВТОРА оригинального продукта, чтобы обвинить его или заставить
+взять на себя ответственность.
+
+НИ ПРИ КАКИХ ОБСТОЯТЕЛЬСТВАХ АВТОРЫ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ЗА ПРЕТЕНЗИИ,
+УБЫТКИ ИЛИ ДРУГИЕ ОТВЕТСТВЕННОСТИ, ПОДНЯТЫЕ ВО ВРЕМЯ КОНТРАКТА И ВЫЗВАННЫЕ
+ПРЯМОЙ ИЛИ КОСВЕННОЙ СВЯЗЬЮ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ.
+
+Удачи, и храни тебя Господь.
